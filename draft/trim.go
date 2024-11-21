@@ -11,9 +11,11 @@ import (
 	"image/png"
 	"math"
 	"os"
+	"path/filepath"
 	"slices"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/kanrichan/resvg-go"
 	log "github.com/sirupsen/logrus"
@@ -29,7 +31,8 @@ type stroke struct {
 }
 
 type polygon struct {
-	S []stroke
+	Name string
+	S    []stroke
 }
 
 func (p polygon) Left() int {
@@ -93,6 +96,9 @@ func main_() int {
 		return 1
 	}
 
+	fnBase := filepath.Base(fn)
+	fnName := strings.TrimSuffix(fnBase, filepath.Ext(fnBase))
+
 	worker, _ := resvg.NewDefaultWorker(context.Background())
 	defer worker.Close()
 
@@ -126,11 +132,9 @@ func main_() int {
 	for n := range cutLineLayer.Descendants() {
 		switch n.Data {
 		case "rect":
-			log.Infof("found a rectangle")
-
 			// x and y will be zero if omitted
 			// width and height must be a valid float
-			xf, yf, wf, hf := 0.0, 0.0, math.NaN(), math.NaN()
+			xf, yf, wf, hf, eid := 0.0, 0.0, math.NaN(), math.NaN(), ""
 
 			for _, attr := range n.Attr {
 				switch attr.Key {
@@ -158,6 +162,8 @@ func main_() int {
 						log.Errorf("failed to parse rect height: %s (value = '%s')", err, attr.Val)
 						return 1
 					}
+				case "id":
+					eid = attr.Val
 				}
 			}
 
@@ -176,6 +182,7 @@ func main_() int {
 			// (x, y+h)---(x+w, y+h)
 
 			polygons = append(polygons, polygon{
+				Name: eid,
 				S: []stroke{
 					{x, y, x, y + h},
 					{x, y + h, x + w, y + h},
@@ -184,11 +191,16 @@ func main_() int {
 				},
 			})
 		case "polygon":
-			log.Infof("found a polygon")
-
 			var ps []point
+			var eid string
 			for _, attr := range n.Attr {
-				if attr.Key != "points" {
+				switch attr.Key {
+				case "id":
+					eid = attr.Val
+					continue
+				case "points":
+					// Go ahead!
+				default:
 					continue
 				}
 
@@ -218,6 +230,7 @@ func main_() int {
 				}
 
 				var poly polygon
+				poly.Name = eid
 				for i := 0; i < len(ps)-1; i++ {
 					poly.S = append(poly.S, stroke{ps[i].X, ps[i].Y, ps[i+1].X, ps[i+1].Y})
 				}
@@ -241,10 +254,8 @@ func main_() int {
 		return 1
 	}
 
-	var frames []*image.RGBA
-
-	for i, poly := range polygons {
-		log.Infof("processing %d/%d frame", i+1, len(polygons))
+	save := func(wg *sync.WaitGroup, fn string, poly polygon) {
+		defer wg.Done()
 
 		frame := image.NewRGBA(image.Rect(0, 0, poly.Width(), poly.Height()))
 		left, top := poly.Left(), poly.Top()
@@ -259,33 +270,35 @@ func main_() int {
 				}
 			}
 		}
-		frames = append(frames, frame)
-	}
 
-	log.Infof("rendered SVG with %d frames", len(frames))
-
-	save := func(fn string, frame *image.RGBA) error {
-		f, err := os.Create(fn)
+		var f *os.File
+		if poly.Name == "" {
+			f, err = os.Create(fmt.Sprintf("%s_%d_%d.png", fn, poly.Left(), poly.Top()))
+		} else {
+			f, err = os.Create(fmt.Sprintf("%s_%s.png", fn, poly.Name))
+		}
 		if err != nil {
-			return fmt.Errorf("failed to create %s: %s", fn, err)
+			log.Errorf("failed to create %s: %s", fn, err)
 		}
 		defer f.Close()
 
 		err = png.Encode(f, frame)
 		if err != nil {
-			return fmt.Errorf("failed to encode a frame into PNG: %s", err)
-		}
-		return nil
-	}
-
-	for i, frame := range frames {
-		log.Infof("saving %d/%d frame", i+1, len(frames))
-		frameFn := fmt.Sprintf("%s_%d.png", fn, i)
-
-		if err := save(frameFn, frame); err != nil {
-			log.Error(err)
+			log.Errorf("failed to encode a frame into PNG: %s", err)
 		}
 	}
+
+	wg := sync.WaitGroup{}
+	for i, poly := range polygons {
+		if poly.Name == "" {
+			log.Infof("processing and saving %02d/%02d", i+1, len(polygons))
+		} else {
+			log.Infof("processing and saving %02d/%02d (%s)", i+1, len(polygons), poly.Name)
+		}
+		wg.Add(1)
+		go save(&wg, fnName, poly)
+	}
+	wg.Wait()
 
 	return 0
 }
