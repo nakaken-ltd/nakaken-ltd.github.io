@@ -81,17 +81,149 @@ func (p polygon) Inside(x, y int) bool {
 	return count%2 != 0
 }
 
-type polyArgs struct {
+// Main procedures split into funcs for testability
+
+func findCutLineLayer(doc *html.Node) *html.Node {
+	for n := range doc.Descendants() {
+		if n.Data != "g" {
+			continue
+		}
+		for _, attr := range n.Attr {
+			if attr.Key == "id" && attr.Val == "cutline" {
+				return n
+			}
+		}
+	}
+	return nil
+}
+
+func findPolygons(cutLineLayer *html.Node) (polygons []polygon, err error) {
+	for n := range cutLineLayer.Descendants() {
+		switch n.Data {
+		case "rect":
+			// x and y will be zero if omitted
+			// width and height must be a valid float
+			xf, yf, wf, hf, eid := 0.0, 0.0, math.NaN(), math.NaN(), ""
+
+			for _, attr := range n.Attr {
+				switch attr.Key {
+				case "x":
+					xf, err = strconv.ParseFloat(attr.Val, 64)
+					if err != nil {
+						err = fmt.Errorf("failed to parse rect x: %s (value = '%s')", err, attr.Val)
+						return
+					}
+				case "y":
+					yf, err = strconv.ParseFloat(attr.Val, 64)
+					if err != nil {
+						err = fmt.Errorf("failed to parse rect y: %s (value = '%s')", err, attr.Val)
+						return
+					}
+				case "width":
+					wf, err = strconv.ParseFloat(attr.Val, 64)
+					if err != nil {
+						err = fmt.Errorf("failed to parse rect width: %s (value = '%s')", err, attr.Val)
+						return
+					}
+				case "height":
+					hf, err = strconv.ParseFloat(attr.Val, 64)
+					if err != nil {
+						err = fmt.Errorf("failed to parse rect height: %s (value = '%s')", err, attr.Val)
+						return
+					}
+				case "id":
+					eid = attr.Val
+				}
+			}
+
+			if math.IsNaN(wf) || math.IsNaN(hf) {
+				err = fmt.Errorf("width or height was not found for a rect")
+				return
+			}
+
+			x, y, w, h := int(math.Round(xf)), int(math.Round(yf)), int(math.Round(wf)), int(math.Round(hf))
+
+			// Convert the rect into a polygon like the following:
+			// (x,   y)---(x+w,   y)
+			//   |            |
+			//   |            |
+			//   |            |
+			// (x, y+h)---(x+w, y+h)
+
+			polygons = append(polygons, polygon{
+				Name: eid,
+				S: []stroke{
+					{x, y, x, y + h},
+					{x, y + h, x + w, y + h},
+					{x + w, y + h, x + w, y},
+					{x + w, y, x, y},
+				},
+			})
+		case "polygon":
+			var ps []point
+			var eid string
+			for _, attr := range n.Attr {
+				switch attr.Key {
+				case "id":
+					eid = attr.Val
+					continue
+				case "points":
+					// Go ahead!
+				default:
+					continue
+				}
+
+				// Split into string ints of multiple points' coordinates
+				coords := strings.Split(attr.Val, " ")
+				if len(coords)%2 != 0 {
+					err = fmt.Errorf("points' length is invalid: %d", len(coords))
+					return
+				}
+
+				for i := 0; i < len(coords); i += 2 {
+					xs, ys := coords[i], coords[i+1]
+					xf, yf := 0.0, 0.0
+
+					xf, err = strconv.ParseFloat(xs, 64)
+					if err != nil {
+						err = fmt.Errorf("points has invalid position (failed to parse X): %s", xs)
+						return
+					}
+
+					yf, err = strconv.ParseFloat(ys, 64)
+					if err != nil {
+						err = fmt.Errorf("points has invalid position (failed to parse Y): %s", ys)
+						return
+					}
+
+					ps = append(ps, point{int(math.Round(xf)), int(math.Round(yf))})
+				}
+
+				var poly polygon
+				poly.Name = eid
+				for i := 0; i < len(ps)-1; i++ {
+					poly.S = append(poly.S, stroke{ps[i].X, ps[i].Y, ps[i+1].X, ps[i+1].Y})
+				}
+				polygons = append(polygons, poly)
+			}
+		}
+	}
+	return
+}
+
+// Template parameters
+
+type templateParamsPolygon struct {
 	Alt           string
 	Src           string
 	Width, Height int
 	Top, Left     int
 }
 
-type templateArgs struct {
+type templateParams struct {
 	CompName      string
 	Width, Height int
-	Polygons      []polyArgs
+	Polygons      []templateParamsPolygon
 }
 
 func main() {
@@ -134,135 +266,17 @@ func main_() int {
 	}
 
 	log.Infof("finding the 'cutline' layer")
-	var cutLineLayer *html.Node
-	for n := range doc.Descendants() {
-		if n.Data != "g" {
-			continue
-		}
-		for _, attr := range n.Attr {
-			if attr.Key == "id" && attr.Val == "cutline" {
-				cutLineLayer = n
-			}
-		}
-	}
-
+	cutLineLayer := findCutLineLayer(doc)
 	if cutLineLayer == nil {
 		log.Errorf("Layer 'cutline' was not found")
 		return 1
 	}
 
-	var polygons []polygon
-
-	for n := range cutLineLayer.Descendants() {
-		switch n.Data {
-		case "rect":
-			// x and y will be zero if omitted
-			// width and height must be a valid float
-			xf, yf, wf, hf, eid := 0.0, 0.0, math.NaN(), math.NaN(), ""
-
-			for _, attr := range n.Attr {
-				switch attr.Key {
-				case "x":
-					xf, err = strconv.ParseFloat(attr.Val, 64)
-					if err != nil {
-						log.Errorf("failed to parse rect x: %s (value = '%s')", err, attr.Val)
-						return 1
-					}
-				case "y":
-					yf, err = strconv.ParseFloat(attr.Val, 64)
-					if err != nil {
-						log.Errorf("failed to parse rect y: %s (value = '%s')", err, attr.Val)
-						return 1
-					}
-				case "width":
-					wf, err = strconv.ParseFloat(attr.Val, 64)
-					if err != nil {
-						log.Errorf("failed to parse rect width: %s (value = '%s')", err, attr.Val)
-						return 1
-					}
-				case "height":
-					hf, err = strconv.ParseFloat(attr.Val, 64)
-					if err != nil {
-						log.Errorf("failed to parse rect height: %s (value = '%s')", err, attr.Val)
-						return 1
-					}
-				case "id":
-					eid = attr.Val
-				}
-			}
-
-			if math.IsNaN(wf) || math.IsNaN(hf) {
-				log.Errorf("width or height was not found for a rect")
-				return 1
-			}
-
-			x, y, w, h := int(math.Round(xf)), int(math.Round(yf)), int(math.Round(wf)), int(math.Round(hf))
-
-			// Convert the rect into a polygon like the following:
-			// (x,   y)---(x+w,   y)
-			//   |            |
-			//   |            |
-			//   |            |
-			// (x, y+h)---(x+w, y+h)
-
-			polygons = append(polygons, polygon{
-				Name: eid,
-				S: []stroke{
-					{x, y, x, y + h},
-					{x, y + h, x + w, y + h},
-					{x + w, y + h, x + w, y},
-					{x + w, y, x, y},
-				},
-			})
-		case "polygon":
-			var ps []point
-			var eid string
-			for _, attr := range n.Attr {
-				switch attr.Key {
-				case "id":
-					eid = attr.Val
-					continue
-				case "points":
-					// Go ahead!
-				default:
-					continue
-				}
-
-				// Split into string ints of multiple points' coordinates
-				coords := strings.Split(attr.Val, " ")
-				if len(coords)%2 != 0 {
-					log.Errorf("points' length is invalid: %d", len(coords))
-					return 1
-				}
-
-				for i := 0; i < len(coords); i += 2 {
-					xs, ys := coords[i], coords[i+1]
-
-					xf, err := strconv.ParseFloat(xs, 64)
-					if err != nil {
-						log.Errorf("points has invalid position (failed to parse X): %s", xs)
-						return 1
-					}
-
-					yf, err := strconv.ParseFloat(ys, 64)
-					if err != nil {
-						log.Errorf("points has invalid position (failed to parse Y): %s", ys)
-						return 1
-					}
-
-					ps = append(ps, point{int(math.Round(xf)), int(math.Round(yf))})
-				}
-
-				var poly polygon
-				poly.Name = eid
-				for i := 0; i < len(ps)-1; i++ {
-					poly.S = append(poly.S, stroke{ps[i].X, ps[i].Y, ps[i+1].X, ps[i+1].Y})
-				}
-				polygons = append(polygons, poly)
-			}
-		}
+	polygons, err := findPolygons(cutLineLayer)
+	if err != nil {
+		log.Errorf("failed to find polygons: %s", err)
+		return 1
 	}
-
 	log.Infof("found %d rects/polygons", len(polygons))
 
 	if !noCut {
@@ -338,9 +352,9 @@ func main_() int {
 		topmost := slices.MinFunc(polygons, func(a, b polygon) int { return cmp.Compare(a.Top(), b.Top()) }).Top()
 		bottommost := slices.MaxFunc(polygons, func(a, b polygon) int { return cmp.Compare(a.Bottom(), b.Bottom()) }).Bottom()
 
-		var pargs []polyArgs
+		var pargs []templateParamsPolygon
 		for _, poly := range polygons {
-			pargs = append(pargs, polyArgs{
+			pargs = append(pargs, templateParamsPolygon{
 				Alt:    poly.Name,
 				Src:    fmt.Sprintf("%s_%s.png", fnName, poly.Name),
 				Width:  poly.Width(),
@@ -350,7 +364,7 @@ func main_() int {
 			})
 		}
 
-		args := templateArgs{
+		args := templateParams{
 			CompName: "MangaFrames",
 			Width:    rightmost - leftmost,
 			Height:   bottommost - topmost,
