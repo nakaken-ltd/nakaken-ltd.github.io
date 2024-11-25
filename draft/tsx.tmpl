@@ -1,0 +1,15 @@
+import Image from 'next/image';
+
+export default function {{.CompName}}() {
+  return (
+    <div className="[@media(min-width:1024px)]:h-[{{.Height}}px] h-[calc({{.Height}}/{{.Width}}*96vw)]">
+      {{range $p := .Polygons}}<div>
+        <img
+          alt="{{$p.Alt}}"
+          src="{{$p.Src}}"
+          className="absolute max-w-full w-auto [@media(min-width:1024px)]:left-[{{$p.Left}}px] left-[calc({{$p.Left}}/{{$.Height}}*96vw)] [@media(min-width:1024px)]:top-[{{$p.Top}}px] top-[calc({{$p.Top}}/{{$.Height}}*96vw)] [@media(min-width:1024px)]:h-[{{$p.Height}}px] h-[calc({{$p.Height}}/{{$.Height}}*98vw)]"/>
+      </div>
+      {{end}}
+    </div>
+  );
+}

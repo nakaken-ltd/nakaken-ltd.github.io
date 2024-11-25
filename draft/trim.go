@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"cmp"
 	"context"
+	_ "embed"
 	"flag"
 	"fmt"
 	"image"
@@ -16,11 +17,15 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"text/template"
 
 	"github.com/kanrichan/resvg-go"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/html"
 )
+
+//go:embed tsx.tmpl
+var tsxTemplate string
 
 type point struct {
 	X, Y int
@@ -31,8 +36,9 @@ type stroke struct {
 }
 
 type polygon struct {
-	Name string
-	S    []stroke
+	Name                  string
+	OffsetTop, OffsetLeft int
+	S                     []stroke
 }
 
 func (p polygon) Left() int {
@@ -75,11 +81,29 @@ func (p polygon) Inside(x, y int) bool {
 	return count%2 != 0
 }
 
+type polyArgs struct {
+	Alt           string
+	Src           string
+	Width, Height int
+	Top, Left     int
+}
+
+type templateArgs struct {
+	CompName      string
+	Width, Height int
+	Polygons      []polyArgs
+}
+
 func main() {
 	os.Exit(main_())
 }
 
 func main_() int {
+	var noCut bool
+	var generateTSX string
+
+	flag.BoolVar(&noCut, "nocut", true, "Skip cutting image")
+	flag.StringVar(&generateTSX, "generate", "", "Generate TSX and save it at the specified path")
 	flag.Parse()
 
 	if flag.NArg() != 1 {
@@ -241,64 +265,109 @@ func main_() int {
 
 	log.Infof("found %d rects/polygons", len(polygons))
 
-	log.Infof("rendering SVG")
-	pngBuf, err := worker.Render(svg)
-	if err != nil {
-		log.Errorf("failed to render SVG: %s", err)
-		return 1
-	}
+	if !noCut {
+		log.Infof("rendering SVG")
+		pngBuf, err := worker.Render(svg)
+		if err != nil {
+			log.Errorf("failed to render SVG: %s", err)
+			return 1
+		}
 
-	img, _, err := image.Decode(bytes.NewReader(pngBuf))
-	if err != nil {
-		log.Errorf("failed to decode rendered PNG: %s", err)
-		return 1
-	}
+		img, _, err := image.Decode(bytes.NewReader(pngBuf))
+		if err != nil {
+			log.Errorf("failed to decode rendered PNG: %s", err)
+			return 1
+		}
 
-	save := func(wg *sync.WaitGroup, fn string, poly polygon) {
-		defer wg.Done()
+		save := func(wg *sync.WaitGroup, fn string, poly polygon) {
+			defer wg.Done()
 
-		frame := image.NewRGBA(image.Rect(0, 0, poly.Width(), poly.Height()))
-		left, top := poly.Left(), poly.Top()
-		bg := color.RGBA{R: 255, G: 255, B: 255, A: 0}
+			frame := image.NewRGBA(image.Rect(0, 0, poly.Width(), poly.Height()))
+			left, top := poly.Left(), poly.Top()
+			bg := color.RGBA{R: 255, G: 255, B: 255, A: 0}
 
-		for y := poly.Top(); y <= poly.Bottom(); y++ {
-			for x := poly.Left(); x <= poly.Right(); x++ {
-				if poly.Inside(x, y) {
-					frame.Set(x-left, y-top, img.At(x, y))
-				} else {
-					frame.Set(x, y-top, bg)
+			for y := poly.Top(); y <= poly.Bottom(); y++ {
+				for x := poly.Left(); x <= poly.Right(); x++ {
+					if poly.Inside(x, y) {
+						frame.Set(x-left, y-top, img.At(x, y))
+					} else {
+						frame.Set(x, y-top, bg)
+					}
 				}
+			}
+
+			var f *os.File
+			if poly.Name == "" {
+				f, err = os.Create(fmt.Sprintf("%s_%d_%d.png", fn, poly.Left(), poly.Top()))
+			} else {
+				f, err = os.Create(fmt.Sprintf("%s_%s.png", fn, poly.Name))
+			}
+			if err != nil {
+				log.Errorf("failed to create %s: %s", fn, err)
+			}
+			defer f.Close()
+
+			err = png.Encode(f, frame)
+			if err != nil {
+				log.Errorf("failed to encode a frame into PNG: %s", err)
 			}
 		}
 
-		var f *os.File
-		if poly.Name == "" {
-			f, err = os.Create(fmt.Sprintf("%s_%d_%d.png", fn, poly.Left(), poly.Top()))
-		} else {
-			f, err = os.Create(fmt.Sprintf("%s_%s.png", fn, poly.Name))
+		wg := sync.WaitGroup{}
+		for i, poly := range polygons {
+			if poly.Name == "" {
+				log.Infof("processing and saving %02d/%02d", i+1, len(polygons))
+			} else {
+				log.Infof("processing and saving %02d/%02d (%s)", i+1, len(polygons), poly.Name)
+			}
+			wg.Add(1)
+			go save(&wg, fnName, poly)
 		}
-		if err != nil {
-			log.Errorf("failed to create %s: %s", fn, err)
-		}
-		defer f.Close()
-
-		err = png.Encode(f, frame)
-		if err != nil {
-			log.Errorf("failed to encode a frame into PNG: %s", err)
-		}
+		wg.Wait()
 	}
 
-	wg := sync.WaitGroup{}
-	for i, poly := range polygons {
-		if poly.Name == "" {
-			log.Infof("processing and saving %02d/%02d", i+1, len(polygons))
-		} else {
-			log.Infof("processing and saving %02d/%02d (%s)", i+1, len(polygons), poly.Name)
+	if generateTSX != "" {
+		tsx, err := template.New("tsx").Parse(tsxTemplate)
+		if err != nil {
+			log.Errorf("failed to parse TSX template: %s", err)
+			return 1
 		}
-		wg.Add(1)
-		go save(&wg, fnName, poly)
+
+		leftmost := slices.MinFunc(polygons, func(a, b polygon) int { return cmp.Compare(a.Left(), b.Left()) }).Left()
+		rightmost := slices.MaxFunc(polygons, func(a, b polygon) int { return cmp.Compare(a.Right(), b.Right()) }).Right()
+		topmost := slices.MinFunc(polygons, func(a, b polygon) int { return cmp.Compare(a.Top(), b.Top()) }).Top()
+		bottommost := slices.MaxFunc(polygons, func(a, b polygon) int { return cmp.Compare(a.Bottom(), b.Bottom()) }).Bottom()
+
+		var pargs []polyArgs
+		for _, poly := range polygons {
+			pargs = append(pargs, polyArgs{
+				Alt:    poly.Name,
+				Src:    fmt.Sprintf("%s_%s.png", fnName, poly.Name),
+				Width:  poly.Width(),
+				Height: poly.Height(),
+				Top:    poly.Top(),
+				Left:   poly.Left(),
+			})
+		}
+
+		args := templateArgs{
+			CompName: "MangaFrames",
+			Width:    rightmost - leftmost,
+			Height:   bottommost - topmost,
+			Polygons: pargs,
+		}
+
+		f, err := os.Create(generateTSX)
+		if err != nil {
+			log.Errorf("failed to create TSX output file: %s", err)
+			return 1
+		}
+
+		if err = tsx.Execute(f, args); err != nil {
+			log.Errorf("failed to render TSX output file: %s", err)
+			return 1
+		}
 	}
-	wg.Wait()
 
 	return 0
 }
