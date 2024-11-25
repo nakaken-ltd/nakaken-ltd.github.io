@@ -231,10 +231,10 @@ func main() {
 }
 
 func main_() int {
-	var noCut bool
+	var cutFrames string
 	var generateTSX string
 
-	flag.BoolVar(&noCut, "nocut", true, "Skip cutting image")
+	flag.StringVar(&cutFrames, "cut", "", "Cut image into the frames and save it in the specified path")
 	flag.StringVar(&generateTSX, "generate", "", "Generate TSX and save it at the specified path")
 	flag.Parse()
 
@@ -279,7 +279,13 @@ func main_() int {
 	}
 	log.Infof("found %d rects/polygons", len(polygons))
 
-	if !noCut {
+	if cutFrames != "" {
+		fnPath, err := filepath.EvalSymlinks(cutFrames)
+		if err != nil {
+			log.Errorf("failed to evaluate symlinks (invalid output path?): %s", err)
+			return 1
+		}
+
 		log.Infof("rendering SVG")
 		pngBuf, err := worker.Render(svg)
 		if err != nil {
@@ -335,7 +341,7 @@ func main_() int {
 				log.Infof("processing and saving %02d/%02d (%s)", i+1, len(polygons), poly.Name)
 			}
 			wg.Add(1)
-			go save(&wg, fnName, poly)
+			go save(&wg, filepath.Join(fnPath, fnName), poly)
 		}
 		wg.Wait()
 	}
