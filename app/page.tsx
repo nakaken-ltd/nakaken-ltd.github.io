@@ -1,9 +1,21 @@
 import Image from "next/image";
+import Link from "next/link";
+import MangaFrames from "./components/MangaFrames"
 
 export default function Home() {
   return (
+    <div>
+      <div className="lg:max-w-screen-lg mx-auto">
+        <div className="sticky top-0 z-10 w-full">
+          <h1>Title</h1>
+        </div>
+        <MangaFrames/>
+      </div>
+    </div>
+    /*
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <Link href="/company"><button>Company page</button></Link>
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -97,5 +109,6 @@ export default function Home() {
         </a>
       </footer>
     </div>
+    */
   );
 }
