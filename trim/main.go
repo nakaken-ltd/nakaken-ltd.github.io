@@ -223,6 +223,7 @@ type templateParamsPolygon struct {
 type templateParams struct {
 	CompName      string
 	Width, Height int
+	MaxWidth      int
 	Polygons      []templateParamsPolygon
 }
 
@@ -233,9 +234,11 @@ func main() {
 func main_() int {
 	var cutFrames string
 	var generateTSX string
+	var maxWidth int
 
 	flag.StringVar(&cutFrames, "cut", "", "Cut image into the frames and save it in the specified path")
 	flag.StringVar(&generateTSX, "generate", "", "Generate TSX and save it at the specified path")
+	flag.IntVar(&maxWidth, "maxwidth", 1024, "Max height width")
 	flag.Parse()
 
 	if flag.NArg() != 1 {
@@ -374,6 +377,7 @@ func main_() int {
 			CompName: "MangaFrames",
 			Width:    rightmost - leftmost,
 			Height:   bottommost - topmost,
+			MaxWidth: maxWidth,
 			Polygons: pargs,
 		}
 
