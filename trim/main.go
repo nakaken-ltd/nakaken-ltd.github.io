@@ -81,6 +81,42 @@ func (p polygon) Inside(x, y int) bool {
 	return count%2 != 0
 }
 
+// SVGClipPath generates a clip-path shape in `path()` notation.
+// This notation is not recommended because the shape won't be scaled along with the <img>'s scale.
+func (p polygon) SVGClipPath() string {
+	switch len(p.S) {
+	case 0:
+		return ""
+	case 1:
+		return fmt.Sprintf("M%d,%d", p.S[0].X0, p.S[0].Y0)
+	default:
+		ox, oy := p.Left(), p.Top()
+		commands := []string{fmt.Sprintf("M%d,%d", p.S[0].X0-ox, p.S[0].Y0-oy)}
+		for _, s := range p.S[1:] {
+			commands = append(commands, fmt.Sprintf("L%d,%d", s.X0-ox, s.Y0-oy))
+		}
+		return strings.Join(append(commands, "Z"), "")
+	}
+}
+
+// PolygonClipPath generates a clip-path shape in `polygon()` notation.
+// This notation is recommended because the shape will be scaled along with the <img>'s scale.
+func (p polygon) PolygonClipPath() string {
+	if len(p.S) < 3 {
+		return ""
+	}
+
+	ox, oy := float64(p.Left()), float64(p.Top())
+	w, h := float64(p.Width()), float64(p.Height())
+
+	var commands []string
+	for _, s := range p.S {
+		x, y := float64(s.X0)-ox, float64(s.Y0)-oy
+		commands = append(commands, fmt.Sprintf("%.2f%%_%.2f%%", x/w*100, y/h*100))
+	}
+	return strings.Join(commands, ",")
+}
+
 // Main procedures split into funcs for testability
 
 func findCutLineLayer(doc *html.Node) *html.Node {
@@ -218,6 +254,8 @@ type templateParamsPolygon struct {
 	Src           string
 	Width, Height int
 	Top, Left     int
+	SVGCP         string
+	PolyCP        string
 }
 
 type templateParams struct {
@@ -370,6 +408,8 @@ func main_() int {
 				Height: poly.Height(),
 				Top:    poly.Top(),
 				Left:   poly.Left(),
+				SVGCP:  poly.SVGClipPath(),
+				PolyCP: poly.PolygonClipPath(),
 			})
 		}
 
