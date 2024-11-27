@@ -99,6 +99,41 @@ func TestPolygon(t *testing.T) {
 			t.Errorf("inside (%d, %d): expected %v, got %v", s.X, s.Y, s.Inside, actual)
 		}
 	}
+
+	// Convert to SVG test
+
+	ss2 := []struct {
+		P      polygon
+		Expect string
+	}{
+		{
+			P:      polygon{},
+			Expect: "",
+		},
+		{
+			P:      polygon{S: []stroke{{3, 9, 4, 10}}},
+			Expect: "M3,9",
+		},
+		{
+			P:      p,
+			Expect: "M1,3L0,11L9,10L8,0Z",
+		},
+	}
+
+	for _, s := range ss2 {
+		actual := s.P.SVGClipPath()
+		if actual != s.Expect {
+			t.Errorf("SVG: expected %s, got %s", s.Expect, actual)
+		}
+	}
+
+	// Convert to polygon text
+
+	expect := "11.11%_27.27%,0.00%_100.00%,100.00%_90.91%,88.89%_0.00%"
+	actual := p.PolygonClipPath()
+	if actual != expect {
+		t.Errorf("Polygon: expected %s, got %s", expect, actual)
+	}
 }
 
 //go:embed test.svg
