@@ -210,7 +210,10 @@ func findPolygons(cutLineLayer *html.Node) (polygons []polygon, err error) {
 				}
 
 				// Split into string ints of multiple points' coordinates
-				coords := strings.Split(attr.Val, " ")
+				v := strings.ReplaceAll(attr.Val, "\n", "")
+				v = strings.ReplaceAll(v, "\t", "")
+				v = strings.ReplaceAll(v, ",", " ")
+				coords := strings.Split(strings.TrimSpace(v), " ")
 				if len(coords)%2 != 0 {
 					err = fmt.Errorf("points' length is invalid: %d", len(coords))
 					return
@@ -233,6 +236,11 @@ func findPolygons(cutLineLayer *html.Node) (polygons []polygon, err error) {
 					}
 
 					ps = append(ps, point{int(math.Round(xf)), int(math.Round(yf))})
+				}
+
+				// Append the first point if it is not present
+				if ps[0].X != ps[len(ps)-1].X || ps[0].Y != ps[len(ps)-1].Y {
+					ps = append(ps, ps[0])
 				}
 
 				var poly polygon
