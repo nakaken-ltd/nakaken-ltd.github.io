@@ -38,6 +38,7 @@ type stroke struct {
 type polygon struct {
 	Name                  string
 	OffsetTop, OffsetLeft int
+	DPR                   int
 	S                     []stroke
 }
 
@@ -188,6 +189,7 @@ func findPolygons(cutLineLayer *html.Node) (polygons []polygon, err error) {
 
 			polygons = append(polygons, polygon{
 				Name: eid,
+				DPR:  1,
 				S: []stroke{
 					{x, y, x, y + h},
 					{x, y + h, x + w, y + h},
@@ -245,6 +247,7 @@ func findPolygons(cutLineLayer *html.Node) (polygons []polygon, err error) {
 
 				var poly polygon
 				poly.Name = eid
+				poly.DPR = 1
 				for i := 0; i < len(ps)-1; i++ {
 					poly.S = append(poly.S, stroke{ps[i].X, ps[i].Y, ps[i+1].X, ps[i+1].Y})
 				}
@@ -252,6 +255,30 @@ func findPolygons(cutLineLayer *html.Node) (polygons []polygon, err error) {
 			}
 		}
 	}
+	return
+}
+
+func scalePolygons(polygons []polygon, dpr int) (newPolygons []polygon) {
+	for i := range polygons {
+		poly := polygon{
+			Name:       polygons[i].Name,
+			DPR:        dpr,
+			OffsetTop:  polygons[i].OffsetTop * dpr,
+			OffsetLeft: polygons[i].OffsetLeft * dpr,
+		}
+
+		for j := range polygons[i].S {
+			poly.S = append(poly.S, stroke{
+				X0: polygons[i].S[j].X0 * dpr,
+				Y0: polygons[i].S[j].Y0 * dpr,
+				X1: polygons[i].S[j].X1 * dpr,
+				Y1: polygons[i].S[j].Y1 * dpr,
+			})
+		}
+
+		newPolygons = append(newPolygons, poly)
+	}
+
 	return
 }
 
@@ -280,10 +307,12 @@ func main() {
 func main_() int {
 	var cutFrames string
 	var generateTSX string
+	var dpr int
 	var maxWidth int
 
 	flag.StringVar(&cutFrames, "cut", "", "Cut image into the frames and save it in the specified path")
 	flag.StringVar(&generateTSX, "generate", "", "Generate TSX and save it at the specified path")
+	flag.IntVar(&dpr, "dpr", 1, "device pixel ratio")
 	flag.IntVar(&maxWidth, "maxwidth", 1024, "Max height width")
 	flag.Parse()
 
@@ -336,9 +365,40 @@ func main_() int {
 		}
 
 		log.Infof("rendering SVG")
-		pngBuf, err := worker.Render(svg)
+		tree, err := worker.NewTreeFromData(svg, &resvg.Options{})
+		if err != nil {
+			log.Errorf("failed to generate a new tree from data: %s", err)
+			return 1
+		}
+		defer tree.Close()
+
+		width, height, err := tree.GetSize()
+		if err != nil {
+			log.Errorf("failed to get the dimension: %s", err)
+			return 1
+		}
+		log.Infof("width: %.1f, height: %.1f", width, height)
+
+		if dpr > 1 {
+			log.Infof("Scaling %dx", dpr)
+		}
+
+		pm, err := worker.NewPixmap(uint32(width*float32(dpr)), uint32(height*float32(dpr)))
+		if err != nil {
+			log.Errorf("failed to generate a new pixmap: %s", err)
+			return 1
+		}
+		defer pm.Close()
+
+		err = tree.Render(resvg.TransformFromScale(float32(dpr), float32(dpr)), pm)
 		if err != nil {
 			log.Errorf("failed to render SVG: %s", err)
+			return 1
+		}
+
+		pngBuf, err := pm.EncodePNG()
+		if err != nil {
+			log.Errorf("failed to encode PNG: %s", err)
 			return 1
 		}
 
@@ -367,9 +427,9 @@ func main_() int {
 
 			var f *os.File
 			if poly.Name == "" {
-				f, err = os.Create(fmt.Sprintf("%s_%d_%d.png", fn, poly.Left(), poly.Top()))
+				f, err = os.Create(fmt.Sprintf("%s_%d_%d_%dx.png", fn, poly.Left()/poly.DPR, poly.Top()/poly.DPR, poly.DPR))
 			} else {
-				f, err = os.Create(fmt.Sprintf("%s_%s.png", fn, poly.Name))
+				f, err = os.Create(fmt.Sprintf("%s_%s_%dx.png", fn, poly.Name, poly.DPR))
 			}
 			if err != nil {
 				log.Errorf("failed to create %s: %s", fn, err)
@@ -382,12 +442,14 @@ func main_() int {
 			}
 		}
 
+		scaledPolygons := scalePolygons(polygons, dpr)
+
 		wg := sync.WaitGroup{}
-		for i, poly := range polygons {
+		for i, poly := range scaledPolygons {
 			if poly.Name == "" {
-				log.Infof("processing and saving %02d/%02d", i+1, len(polygons))
+				log.Infof("processing and saving %02d/%02d", i+1, len(scaledPolygons))
 			} else {
-				log.Infof("processing and saving %02d/%02d (%s)", i+1, len(polygons), poly.Name)
+				log.Infof("processing and saving %02d/%02d (%s)", i+1, len(scaledPolygons), poly.Name)
 			}
 			wg.Add(1)
 			go save(&wg, filepath.Join(fnPath, fnName), poly)
