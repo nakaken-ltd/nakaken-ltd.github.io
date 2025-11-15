@@ -67,18 +67,7 @@ export default function RecruitPage() {
                       </p>
 
                       <p className="mb-[1em]">
-                        弊社では、岡山県東備地域の土木工事、赤磐市の土木・建築・水道・下水工事、民間施設の建築・土木修繕工事、
-                        一般住宅の新築・リフォーム工事、草刈り業務（ラジコンによる）等、いろいろな分野での作業を受注しています。
                         夏は暑くて、冬は寒い環境ですが、みんなで楽しく出来る会社を目指しています。
-                      </p>
-
-                      <p className="mb-[1em]">
-                        また、当社はうらじゃを応援しているので、うらじゃの踊り子さんは優遇いたします。<br/>
-                      </p>
-
-                      <p className="mb-[1em]">
-                        1. うらじゃ衣装代は当社負担。（勤続６ヶ月以上から）<br/>
-                        2. 繁忙期でも本祭、遠征を優先してＯＫ。<br/>
                       </p>
 
                       <p>
@@ -132,6 +121,14 @@ export default function RecruitPage() {
                       ２級土木施工管理技士 あれば尚可<br/>
                       ２級建築施工管理技士 あれば尚可<br/>
                       その他の土木・舗装・線路工事関係資格 あれば尚可<br/>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-gray-400 border-default">
+                    <td className="px-6 py-3">その他優遇等</td>
+                    <td className="px-6 py-3">
+                      当社はうらじゃを応援しているので、うらじゃの踊り子さんを優遇いたします。<br/><br/>
+                      1. うらじゃ衣装代は当社負担（勤続６ヶ月以上から）<br/>
+                      2. 繁忙期でも本祭、遠征を優先してOK<br/>
                     </td>
                   </tr>
                   <tr>
@@ -282,7 +279,7 @@ export default function RecruitPage() {
                   height={32}
                   style={{display: "inline", marginRight: '10px'}}
                 />
-                <span className="align-[-6px] text-2xl font-bold">選考等</span>
+                <span className="align-[-6px] text-2xl font-bold">選考</span>
               </div>
               <div className="w-full relative mb-8 rounded-xl border border-gray-400">
                 <table className="w-full text-sm text-left rtl:text-right text-body">
@@ -298,14 +295,32 @@ export default function RecruitPage() {
                     <td className="px-6 py-3">選考結果通知</td>
                     <td className="px-6 py-3">7 日以内に電話で通知</td>
                   </tr>
-                  <tr className="border-b border-gray-400 border-default">
+                  <tr>
                     <td className="px-6 py-3">応募書類</td>
                     <td className="px-6 py-3">履歴書（面接時持参）</td>
                   </tr>
-                  <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">特記事項</td>
-                    <td className="px-6 py-3">うらじゃ踊り子さんなら尚可</td>
-                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
+              <div className="mb-4">
+                <Image
+                  src={header}
+                  alt="ヘッダ"
+                  width={32}
+                  height={32}
+                  style={{display: "inline", marginRight: '10px'}}
+                />
+                <span className="align-[-6px] text-2xl font-bold">連絡先</span>
+              </div>
+              <div className="w-full relative mb-8 rounded-xl border border-gray-400">
+                <table className="w-full text-sm text-left rtl:text-right text-body">
+                  <colgroup>
+                    <col className="w-1/4"/>
+                  </colgroup>
+                  <tbody>
                   <tr className="border-b border-gray-400 border-default">
                     <td className="px-6 py-3">担当者</td>
                     <td className="px-6 py-3">中原 哲哉</td>
