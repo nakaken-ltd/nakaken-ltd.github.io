@@ -15,7 +15,7 @@ export default function Home() {
           <Image src={jumbotron} alt="中原建設工業"></Image>
         </div>
 
-        <div className="lg:max-w-screen-lg mx-auto mt-8">
+        <div className="lg:max-w-screen-lg lg:mt-[calc(0.05*64rem)] mt-[calc(0.05*100vw)] mx-auto">
           <MangaFrames/>
         </div>
       </div>
