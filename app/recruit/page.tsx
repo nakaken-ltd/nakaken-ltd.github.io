@@ -316,16 +316,18 @@ export default function RecruitPage() {
                 日現在の求人票の内容を元にしています。</p>
             </div>
 
-            <div className="relative mb-8 hover:scale-105 transition duration-100">
-              <Image src={entry} alt="エントリーはこちら"/>
-              <div className="absolute inset-0 mb-4 pt-2 flex items-center justify-center pointer-events-none">
-                <span className="text-xl sm:text-4xl font-bold text-center">
-                  採用担当者に<br/>電話する
-                  <span className="inline-block  rotate-[15deg] translate-x-[0.05em] translate-y-[0em]">!</span>
-                  <span className="inline-block  rotate-[15deg] translate-x-[0.05em] translate-y-[0em]">!</span>
-                </span>
+            <a href="tel:0869541700">
+              <div className="relative mb-8 hover:scale-105 transition duration-100 cursor-pointer">
+                <Image src={entry} alt="エントリーはこちら"/>
+                <div className="absolute inset-0 mb-4 pt-2 flex items-center justify-center">
+                  <span className="text-xl sm:text-4xl font-bold text-center">
+                    採用担当者に<br/>電話する
+                    <span className="inline-block  rotate-[15deg] translate-x-[0.05em] translate-y-[0em]">!</span>
+                    <span className="inline-block  rotate-[15deg] translate-x-[0.05em] translate-y-[0em]">!</span>
+                  </span>
+                </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
