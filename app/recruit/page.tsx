@@ -22,8 +22,8 @@ export default function RecruitPage() {
             />
             <Image
               src={recruit}
-              alt="弊社について"
-              width={300}
+              alt="採用情報"
+              width={225}
               objectPosition="center center"
               style={{margin: 'auto', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)'}}
             />

@@ -142,7 +142,7 @@ export default function WorksPage() {
             <Image
               src={works}
               alt="工事実績"
-              width={250}
+              width={215}
               objectPosition="center center"
               style={{margin: 'auto', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)'}}
             />
