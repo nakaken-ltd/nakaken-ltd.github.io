@@ -16,7 +16,7 @@ export default function WorksItem({ title, paragraphs }: Item) {
   const ParagraphComponent = ({ text, imgSrc, alt, index }: Paragraph & { index: number }) => {
     return <div
       className={`
-        flex flex-col gap-8 md:flex-row mt-8
+        flex flex-col gap-4 md:flex-row mb-16
         ${index % 2 === 0 ? "md:flex-row-reverse" : ""}
       `}
     >
@@ -33,7 +33,7 @@ export default function WorksItem({ title, paragraphs }: Item) {
 
   return (
     <div>
-      <div className="mt-16">
+      <div className="mt-8 mb-8">
         <Image
           src={header}
           alt={title}
@@ -41,7 +41,7 @@ export default function WorksItem({ title, paragraphs }: Item) {
           height={32}
           style={{display: "inline", marginRight: '10px'}}
         />
-        <span className="font-bold">{title}</span>
+        <span className="font-bold align-[-6px] text-2xl">{title}</span>
       </div>
 
       {paragraphs.map((p, i) => (
