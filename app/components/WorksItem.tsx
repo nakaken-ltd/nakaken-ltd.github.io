@@ -33,7 +33,7 @@ export default function WorksItem({ title, paragraphs }: Item) {
 
   return (
     <div>
-      <div className="mt-8 mb-8">
+      <div className="mb-4">
         <Image
           src={header}
           alt={title}

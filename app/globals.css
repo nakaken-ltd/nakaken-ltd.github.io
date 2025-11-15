@@ -5,6 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --section-mb-sm: 1.5rem;
+  --section-mb-md: 2rem;
 }
 
 @media (prefers-color-scheme: dark) {

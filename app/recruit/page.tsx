@@ -14,7 +14,7 @@ export default function RecruitPage() {
       <div className="shadow-sides bg-white max-w-screen-lg mx-auto">
         <div className="w-auto h-[64px]"></div>
         <div className="max-w-screen-lg m-auto">
-          <div className="block relative w-full">
+          <div className="block relative w-full mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
             <Image
               src={bang}
               alt="背景"
@@ -29,17 +29,18 @@ export default function RecruitPage() {
             />
           </div>
           <div className="max-w-screen-md m-auto pr-8 pl-8">
-            <div className="mt-8 mb-4">
-              <Image
-                src={header}
-                alt="ヘッダ"
-                width={32}
-                height={32}
-                style={{display: "inline", marginRight: '10px'}}
-              />
-              <span className="align-[-6px] text-2xl font-bold">仕事内容</span>
-            </div>
-            <div className="w-full relative rounded-xl border border-gray-400">
+            <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
+              <div className="mb-4">
+                <Image
+                  src={header}
+                  alt="ヘッダ"
+                  width={32}
+                  height={32}
+                  style={{display: "inline", marginRight: '10px'}}
+                />
+                <span className="align-[-6px] text-2xl font-bold">仕事内容</span>
+              </div>
+              <div className="w-full relative rounded-xl border border-gray-400">
               <table className="w-full text-sm text-left rtl:text-right text-body">
                 <colgroup>
                   <col className="w-1/4"/>
@@ -139,18 +140,20 @@ export default function RecruitPage() {
                 </tbody>
               </table>
             </div>
-
-            <div className="mt-16 mb-4">
-              <Image
-                src={header}
-                alt="ヘッダ"
-                width={32}
-                height={32}
-                style={{display: "inline", marginRight: '10px'}}
-              />
-              <span className="align-[-6px] text-2xl font-bold">賃金・手当</span>
             </div>
-            <div className="w-full relative rounded-xl border border-gray-400">
+
+            <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
+              <div className="mb-4">
+                <Image
+                  src={header}
+                  alt="ヘッダ"
+                  width={32}
+                  height={32}
+                  style={{display: "inline", marginRight: '10px'}}
+                />
+                <span className="align-[-6px] text-2xl font-bold">賃金・手当</span>
+              </div>
+              <div className="w-full relative rounded-xl border border-gray-400">
               <table className="w-full text-sm text-left rtl:text-right text-body">
                 <colgroup>
                   <col className="w-1/4"/>
@@ -187,18 +190,20 @@ export default function RecruitPage() {
                 </tbody>
               </table>
             </div>
-
-            <div className="mt-16 mb-4">
-              <Image
-                src={header}
-                alt="ヘッダ"
-                width={32}
-                height={32}
-                style={{display: "inline", marginRight: '10px'}}
-              />
-              <span className="align-[-6px] text-2xl font-bold">労働時間</span>
             </div>
-            <div className="w-full relative rounded-xl border border-gray-400">
+
+            <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
+              <div className="mb-4">
+                <Image
+                  src={header}
+                  alt="ヘッダ"
+                  width={32}
+                  height={32}
+                  style={{display: "inline", marginRight: '10px'}}
+                />
+                <span className="align-[-6px] text-2xl font-bold">労働時間</span>
+              </div>
+              <div className="w-full relative rounded-xl border border-gray-400">
               <table className="w-full text-sm text-left rtl:text-right text-body">
                 <colgroup>
                   <col className="w-1/4"/>
@@ -231,18 +236,20 @@ export default function RecruitPage() {
                 </tbody>
               </table>
             </div>
-
-            <div className="mt-16 mb-4">
-              <Image
-                src={header}
-                alt="ヘッダ"
-                width={32}
-                height={32}
-                style={{display: "inline", marginRight: '10px'}}
-              />
-              <span className="align-[-6px] text-2xl font-bold">その他の労働条件等</span>
             </div>
-            <div className="w-full relative rounded-xl border border-gray-400">
+
+            <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
+              <div className="mb-4">
+                <Image
+                  src={header}
+                  alt="ヘッダ"
+                  width={32}
+                  height={32}
+                  style={{display: "inline", marginRight: '10px'}}
+                />
+                <span className="align-[-6px] text-2xl font-bold">その他の労働条件等</span>
+              </div>
+              <div className="w-full relative rounded-xl border border-gray-400">
               <table className="w-full text-sm text-left rtl:text-right text-body">
                 <colgroup>
                   <col className="w-1/4"/>
@@ -263,18 +270,20 @@ export default function RecruitPage() {
                 </tbody>
               </table>
             </div>
-
-            <div className="mt-16 mb-4">
-              <Image
-                src={header}
-                alt="ヘッダ"
-                width={32}
-                height={32}
-                style={{display: "inline", marginRight: '10px'}}
-              />
-              <span className="align-[-6px] text-2xl font-bold">選考等</span>
             </div>
-            <div className="w-full relative mb-8 rounded-xl border border-gray-400">
+
+            <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
+              <div className="mb-4">
+                <Image
+                  src={header}
+                  alt="ヘッダ"
+                  width={32}
+                  height={32}
+                  style={{display: "inline", marginRight: '10px'}}
+                />
+                <span className="align-[-6px] text-2xl font-bold">選考等</span>
+              </div>
+              <div className="w-full relative mb-8 rounded-xl border border-gray-400">
               <table className="w-full text-sm text-left rtl:text-right text-body">
                 <colgroup>
                   <col className="w-1/4"/>
@@ -310,6 +319,7 @@ export default function RecruitPage() {
                 </tr>
                 </tbody>
               </table>
+            </div>
             </div>
 
             <div className="mb-16">

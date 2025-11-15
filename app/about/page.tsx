@@ -16,7 +16,7 @@ export default function AboutPage() {
       <div className="shadow-sides bg-white max-w-screen-lg mx-auto">
         <div className="w-auto h-[64px]"></div>
         <div className="max-w-screen-lg m-auto">
-          <div className="block relative w-full">
+          <div className="block relative w-full mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
             <Image
               src={bang}
               alt="背景"
@@ -31,18 +31,18 @@ export default function AboutPage() {
             />
           </div>
           <div className="max-w-screen-md m-auto pr-8 pl-8">
-            <div className="mt-8 mb-4">
-              <Image
-                src={header}
-                alt="ヘッダ"
-                width={32}
-                height={32}
-                style={{display: "inline", marginRight: '10px'}}
-              />
-              <span className="align-[-6px] text-2xl font-bold">企業情報</span>
-            </div>
-
-            <div className="w-full relative rounded-xl border border-gray-400">
+            <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
+              <div className="mb-4">
+                <Image
+                  src={header}
+                  alt="ヘッダ"
+                  width={32}
+                  height={32}
+                  style={{display: "inline", marginRight: '10px'}}
+                />
+                <span className="align-[-6px] text-2xl font-bold">企業情報</span>
+              </div>
+              <div className="w-full relative rounded-xl border border-gray-400">
               <table className="w-full text-sm text-left rtl:text-right text-body">
                 <tbody>
 
@@ -79,22 +79,26 @@ export default function AboutPage() {
                 </tbody>
               </table>
             </div>
-
-            <div className="mt-16 mb-4">
-              <Image
-                src={header}
-                alt="ヘッダ"
-                width={32}
-                height={32}
-                style={{display: "inline", marginRight: '10px'}}
-              />
-              <span className="align-[-6px] text-2xl font-bold">沿革</span>
             </div>
-            <ul className="list-disc ml-[1.5em]">
+
+            <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
+              <div className="mb-4">
+                <Image
+                  src={header}
+                  alt="ヘッダ"
+                  width={32}
+                  height={32}
+                  style={{display: "inline", marginRight: '10px'}}
+                />
+                <span className="align-[-6px] text-2xl font-bold">沿革</span>
+              </div>
+              <ul className="list-disc ml-[1.5em]">
               <li>1982年6月 ─ 有限会社中原建設工業 創業</li>
               <li>1922年6月 ─ 創業40年達成</li>
             </ul>
-            <div className="mt-16 mb-4">
+            </div>
+
+            <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
               <div className="mb-4">
                 <Image
                   src={header}
@@ -137,7 +141,7 @@ export default function AboutPage() {
               <p className="mb-4">
                 仕事の目的は、人生を楽しむこと！そしてその為に、みんなで楽しく仕事をこなしてしっかり利益を出していくことをモットーにしています。
               </p>
-              <p className="mb-4">
+              <p>
                 今日を楽しめる方、連絡待ってます。是非一緒に働きましょう！
               </p>
             </div>
