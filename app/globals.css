@@ -19,11 +19,12 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 
-  background-image:
-      radial-gradient(#777 1.25px, transparent 1.25px),
-      radial-gradient(#777 1.25px, transparent 1.25px);
-  background-size: 32px 32px;
-  background-position: -16px -16px, 0 0;
+  @media (min-width: 64rem) { /* --breakpoint-lg = 64 rem */
+    background-image: radial-gradient(#777 1.25px, transparent 1.25px),
+    radial-gradient(#777 1.25px, transparent 1.25px);
+    background-size: 32px 32px;
+    background-position: -16px -16px, 0 0;
+  }
 }
 
 .shadow-sides {
