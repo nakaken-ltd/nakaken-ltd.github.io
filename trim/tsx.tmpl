@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function {{.CompName}}() {
   return (
-    <div className="relative [@media(min-width:1024px)]:h-[{{.Height}}px] h-[calc({{.Height}}/{{.Width}}*100vw)] max-w-[1024px]">
+    <div className="relative lg:h-[calc({{.Height}}/{{.Width}}*1024px)] h-[calc({{.Height}}/{{.Width}}*100vw)] max-w-[1024px]">
       {{range $p := .Polygons}}<div>
         <a href="/{{$p.Link}}">
           <img
