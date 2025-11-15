@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import MenuBar from "@/app/components/MenuBar";
-import WorksItem, { Item } from "@/app/components/WorksItem";
+import WorksItem, {Item} from "@/app/components/WorksItem";
 
 import works from '../../public/text_works.webp';
 import bang from '../../public/bang.webp';

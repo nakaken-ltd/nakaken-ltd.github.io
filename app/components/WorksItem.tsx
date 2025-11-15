@@ -12,22 +12,22 @@ export type Item = {
   paragraphs: Paragraph[];
 };
 
-export default function WorksItem({ title, paragraphs }: Item) {
-  const ParagraphComponent = ({ text, imgSrc, alt, index }: Paragraph & { index: number }) => {
+export default function WorksItem({title, paragraphs}: Item) {
+  const ParagraphComponent = ({text, imgSrc, alt, index}: Paragraph & { index: number }) => {
     return <div
       className={`
-        flex flex-col gap-4 md:flex-row mb-16
-        ${index % 2 === 0 ? "md:flex-row-reverse" : ""}
+        flex flex-col gap-4 sm:flex-row mb-16
+        ${index % 2 === 0 ? "sm:flex-row-reverse" : ""}
       `}
     >
-      <p className="w-full md:text-lg mx-2 text-justify">{text}</p>
       <Image
         src={imgSrc}
         alt={alt}
         width={1280}
         height={720}
-        className="w-full md:w-[48%] object-cover"
+        className="w-full sm:w-[48%] object-cover"
       />
+      <p className="w-full sm:text-lg mx-2 text-justify">{text}</p>
     </div>
   };
 

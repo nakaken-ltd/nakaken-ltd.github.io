@@ -3,8 +3,6 @@
 import Image from 'next/image';
 import MenuBar from "@/app/components/MenuBar";
 
-// import { noto, genei } from "./"
-
 import aboutUs from '../../public/text_about_us.webp';
 import bang from '../../public/bang.webp';
 import header from '../../public/header.webp';
@@ -43,42 +41,42 @@ export default function AboutPage() {
                 <span className="align-[-6px] text-2xl font-bold">企業情報</span>
               </div>
               <div className="w-full relative rounded-xl border border-gray-400">
-              <table className="w-full text-sm text-left rtl:text-right text-body">
-                <tbody>
+                <table className="w-full text-sm text-left rtl:text-right text-body">
+                  <tbody>
 
-                <tr className="border-b border-gray-400 border-default">
-                  <td className="px-6 py-3">設立年</td>
-                  <td className="px-6 py-3">1982年</td>
-                </tr>
+                  <tr className="border-b border-gray-400 border-default">
+                    <td className="px-6 py-3">設立年</td>
+                    <td className="px-6 py-3">1982年</td>
+                  </tr>
 
-                <tr className="border-b border-gray-400 border-default">
-                  <td className="px-6 py-3">従業員数</td>
-                  <td className="px-6 py-3">5人</td>
-                </tr>
+                  <tr className="border-b border-gray-400 border-default">
+                    <td className="px-6 py-3">従業員数</td>
+                    <td className="px-6 py-3">5人</td>
+                  </tr>
 
-                <tr className="border-b border-gray-400 border-default">
-                  <td className="px-6 py-3">資本金</td>
-                  <td className="px-6 py-3">3,000万円</td>
-                </tr>
+                  <tr className="border-b border-gray-400 border-default">
+                    <td className="px-6 py-3">資本金</td>
+                    <td className="px-6 py-3">3,000万円</td>
+                  </tr>
 
-                <tr className="border-b border-gray-400 border-default">
-                  <td className="px-6 py-3">事業内容</td>
-                  <td className="px-6 py-3">土木工事、建築工事、上下水道工事 全般</td>
-                </tr>
+                  <tr className="border-b border-gray-400 border-default">
+                    <td className="px-6 py-3">事業内容</td>
+                    <td className="px-6 py-3">土木工事、建築工事、上下水道工事 全般</td>
+                  </tr>
 
-                <tr className="border-b border-gray-400 border-default">
-                  <td className="px-6 py-3">法人番号</td>
-                  <td className="px-6 py-3">626000201498236</td>
-                </tr>
+                  <tr className="border-b border-gray-400 border-default">
+                    <td className="px-6 py-3">法人番号</td>
+                    <td className="px-6 py-3">626000201498236</td>
+                  </tr>
 
-                <tr>
-                  <td className="px-6 py-3">代表者名</td>
-                  <td className="px-6 py-3">中原 哲哉</td>
-                </tr>
+                  <tr>
+                    <td className="px-6 py-3">代表者名</td>
+                    <td className="px-6 py-3">中原 哲哉</td>
+                  </tr>
 
-                </tbody>
-              </table>
-            </div>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
@@ -93,9 +91,9 @@ export default function AboutPage() {
                 <span className="align-[-6px] text-2xl font-bold">沿革</span>
               </div>
               <ul className="list-disc ml-[1.5em]">
-              <li>1982年6月 ─ 有限会社中原建設工業 創業</li>
-              <li>1922年6月 ─ 創業40年達成</li>
-            </ul>
+                <li>1982年6月 ─ 有限会社中原建設工業 創業</li>
+                <li>1922年6月 ─ 創業40年達成</li>
+              </ul>
             </div>
 
             <div className="mb-[var(--section-mb-sm)] md:mb-[var(--section-mb-md)]">
