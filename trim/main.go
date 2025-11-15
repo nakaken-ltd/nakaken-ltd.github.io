@@ -314,9 +314,9 @@ func main() {
 func main_() int {
 	cutFrames := flag.String("cut", "", "Cut image into the frames and save it in the specified path")
 	generateTSX := flag.String("generate", "", "Generate TSX and save it at the specified path")
-	dpr := flag.Int("dpr", 1, "device pixel ratio")
+	dpr := flag.Int("dpr", 1, "Device pixel ratio")
 	maxWidth := flag.Int("maxwidth", 1024, "Max height width")
-	lrBlank := flag.Int("lrblank", 1, "left blank and right blank")
+	lrBlank := flag.Int("lrblank", 1, "Left blank and right blank")
 	configFn := flag.String("config", "", "Configuration file")
 	flag.Parse()
 
@@ -330,7 +330,7 @@ func main_() int {
 	}
 
 	if flag.NArg() != 1 {
-		log.Errorf("Usage: %s INPUT_SVG", os.Args[0])
+		log.Errorf("usage: %s INPUT_SVG", os.Args[0])
 		return 1
 	}
 
@@ -359,7 +359,7 @@ func main_() int {
 	log.Infof("finding the 'cutline' layer")
 	cutLineLayer := findCutLineLayer(doc)
 	if cutLineLayer == nil {
-		log.Errorf("Layer 'cutline' was not found")
+		log.Errorf("layer 'cutline' was not found")
 		return 1
 	}
 
