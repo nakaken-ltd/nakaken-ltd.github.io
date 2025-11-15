@@ -19,6 +19,7 @@ import (
 	"sync"
 	"text/template"
 
+	"github.com/BurntSushi/toml"
 	"github.com/kanrichan/resvg-go"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/html"
@@ -287,6 +288,7 @@ func scalePolygons(polygons []polygon, dpr int) (newPolygons []polygon) {
 type templateParamsPolygon struct {
 	Link          string
 	Src           string
+	Alt           string
 	Width, Height int
 	Top, Left     int
 	SVGCP         string
@@ -300,6 +302,11 @@ type templateParams struct {
 	Polygons      []templateParamsPolygon
 }
 
+type trimConfig struct {
+	LinksHref map[string]string `toml:"links_href"`
+	Alts      map[string]string `toml:"alts"`
+}
+
 func main() {
 	os.Exit(main_())
 }
@@ -310,7 +317,17 @@ func main_() int {
 	dpr := flag.Int("dpr", 1, "device pixel ratio")
 	maxWidth := flag.Int("maxwidth", 1024, "Max height width")
 	lrBlank := flag.Int("lrblank", 1, "left blank and right blank")
+	configFn := flag.String("config", "", "Configuration file")
 	flag.Parse()
+
+	config := trimConfig{}
+	if *configFn != "" {
+		_, err := toml.DecodeFile(*configFn, &config)
+		if err != nil {
+			log.Errorf("failed to decode config file: %s", err)
+			return 1
+		}
+	}
 
 	if flag.NArg() != 1 {
 		log.Errorf("Usage: %s INPUT_SVG", os.Args[0])
@@ -469,9 +486,20 @@ func main_() int {
 
 		var pargs []templateParamsPolygon
 		for _, poly := range polygons {
+			link := "/" + poly.Name
+			if l, ok := config.LinksHref[poly.Name]; ok {
+				link = l
+			}
+
+			alt := poly.Name
+			if a, ok := config.Alts[poly.Name]; ok {
+				alt = a
+			}
+
 			pargs = append(pargs, templateParamsPolygon{
-				Link:   poly.Name,
-				Src:    fmt.Sprintf("%s_%s.png", fnName, poly.Name),
+				Link:   link,
+				Src:    fmt.Sprintf("%s_%s.avif", fnName, poly.Name),
+				Alt:    alt,
 				Width:  poly.Width() - leftmost + *lrBlank*2, // Add leftmost (left blank width) to centerize the frames
 				Height: poly.Height(),
 				Top:    poly.Top() - topmost, // Subtract topmost to remove the top blank
