@@ -16,8 +16,8 @@ const inquiryWidth = inquiry.width * (textHeight / inquiry.height);
 
 export default function MenuBar() {
   return <div id="menu" className="fixed top-0 w-full">
-    <div className="flex items-center justify-center h-[64px] max-w-screen-lg bg-white pl-4 pr-4 m-auto">
-      <Link href="/about" className="hidden md:block flex-grow relative h-full">
+    <div className="flex items-center justify-center h-[64px] max-w-screen-lg bg-white m-auto">
+      <Link href="/about" className="hidden md:block flex-grow relative pl-4 h-full cursor-pointer">
         <Image
           src={aboutUs}
           alt="弊社について"
@@ -26,7 +26,7 @@ export default function MenuBar() {
           style={{margin: 'auto', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 20}}
         />
       </Link>
-      <Link href="/works" className="hidden md:block flex-grow relative h-full">
+      <Link href="/works" className="hidden md:block flex-grow relative h-full cursor-pointer">
           <Image
             src={works}
             alt="工事実績"
@@ -35,7 +35,7 @@ export default function MenuBar() {
             style={{margin: 'auto', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)'}}
           />
       </Link>
-      <Link href="/" className="block w-[100px] relative h-full">
+      <Link href="/" className="block w-[100px] relative h-full cursor-pointer">
         <Image
           src={logo}
           alt="ロゴ"
@@ -44,7 +44,7 @@ export default function MenuBar() {
           style={{margin: 'auto', position: 'absolute', top: '48%', left: '50%', transform: 'translate(-50%,-50%)'}}
         />
       </Link>
-      <Link href="/recruit" className="hidden md:block flex-grow relative h-full">
+      <Link href="/recruit" className="hidden md:block flex-grow relative h-full cursor-pointer">
         <Image
           src={recruit}
           alt="採用情報"
@@ -53,7 +53,7 @@ export default function MenuBar() {
           style={{margin: 'auto', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)'}}
         />
       </Link>
-      <Link href="/inquiry" className="hidden md:block flex-grow relative h-full">
+      <Link href="/inquiry" className="hidden md:block flex-grow relative pr-4 h-full cursor-pointer">
         <Image
           src={inquiry}
           alt="お問い合わせ"
