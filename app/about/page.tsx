@@ -31,7 +31,7 @@ export default function AboutPage() {
             />
           </div>
           <div className="max-w-screen-md m-auto pr-8 pl-8">
-            <div className="mt-16 mb-4">
+            <div className="mt-8 mb-4">
               <Image
                 src={header}
                 alt="ヘッダ"

@@ -131,7 +131,8 @@ export default function WorksPage() {
   return (
     <div className="font-genei">
       <div className="shadow-sides bg-white max-w-screen-lg mx-auto">
-        <div className="mt-16 max-w-screen-lg m-auto">
+        <div className="w-auto h-[64px]"></div>
+        <div className="max-w-screen-lg m-auto">
           <div className="block relative w-full">
             <Image
               src={bang}
@@ -146,7 +147,7 @@ export default function WorksPage() {
               style={{margin: 'auto', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)'}}
             />
           </div>
-          <div className="max-w-screen-md m-auto pr-8 pl-8">
+          <div className="max-w-screen-md mt-4 m-auto pr-8 pl-8">
             {items.map((c, i) => (
               <WorksItem key={i} {...c} />
             ))}

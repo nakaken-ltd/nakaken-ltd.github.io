@@ -12,7 +12,8 @@ export default function RecruitPage() {
   return (
     <div className="font-genei">
       <div className="shadow-sides bg-white max-w-screen-lg mx-auto">
-        <div className="mt-16 max-w-screen-lg m-auto">
+        <div className="w-auto h-[64px]"></div>
+        <div className="max-w-screen-lg m-auto">
           <div className="block relative w-full">
             <Image
               src={bang}
@@ -28,7 +29,7 @@ export default function RecruitPage() {
             />
           </div>
           <div className="max-w-screen-md m-auto pr-8 pl-8">
-            <div className="mt-16 mb-4">
+            <div className="mt-8 mb-4">
               <Image
                 src={header}
                 alt="ヘッダ"
