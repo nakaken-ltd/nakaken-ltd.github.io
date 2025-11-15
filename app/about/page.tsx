@@ -95,7 +95,7 @@ export default function AboutPage() {
               <li>1922年6月 ─ 創業40年達成</li>
             </ul>
             <div className="mt-16 mb-4">
-              <div className="mb-8">
+              <div className="mb-4">
                 <Image
                   src={header}
                   alt="ヘッダ"
@@ -106,9 +106,11 @@ export default function AboutPage() {
                 <span className="align-[-6px] text-2xl font-bold">社長より</span>
               </div>
               <div className="mb-8 flex">
-                <Image src={tecchan} alt="社長" width={150} height={200} className="mr-10"/>
+                <div className="mt-2 ml-4">
+                  <Image src={tecchan} alt="社長" width={150} height={200} className=""/>
+                </div>
                 <div className="
-                  relative flex flex-grow-[1] items-center justify-center h-[4rem] m-auto box-border mr-[8px] z-0
+                  relative flex flex-grow-[1] items-center justify-center h-[5.5rem] sm:h-[8rem] m-auto mx-8 box-border z-0
 
                   before:content-[''] before:absolute before:inset-0
                   before:bg-white before:border before:border-black
@@ -121,7 +123,11 @@ export default function AboutPage() {
                   after:[background-position:-1px_-1px,2px_2px]
                   after:-z-10
                 ">
-                  <span className="relative font-bold">こんにちは！社長の中原哲哉です！</span>
+                  <p className="relative font-bold text-lg sm:text-xl text-center mx-2">
+                    <span className="inline-block">こんにちは！</span>
+                    <span className="inline-block">社長の</span>
+                    <span className="inline-block">中原哲哉です！</span>
+                  </p>
                 </div>
               </div>
               <p className="mb-4">
