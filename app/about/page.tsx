@@ -106,16 +106,22 @@ export default function AboutPage() {
                 <span className="align-[-6px] text-2xl font-bold">社長より</span>
               </div>
               <div className="mb-8 flex">
-                {/*<div className="inline-block flex-grow-0 flex-shrink-0 w-[150px] h-[200px] mr-10 bg-gray-500"></div>*/}
                 <Image src={tecchan} alt="社長" width={150} height={200} className="mr-10"/>
-                <div className="inline-block relative flex-grow-[1] h-[4rem] m-auto bg-white box-border p-4
-                  text-center border border-solid border-black mr-[8px]
-                  after:content-[''] after:block after:absolute after:-bottom-[8px] after:-right-[8px]
-                  after:w-full after:h-full after:z-[-1]
+                <div className="
+                  relative flex flex-grow-[1] items-center justify-center h-[4rem] m-auto box-border mr-[8px] z-0
+
+                  before:content-[''] before:absolute before:inset-0
+                  before:bg-white before:border before:border-black
+                  before:z-0
+
+                  after:content-[''] after:absolute after:-bottom-[8px] after:-right-[8px]
+                  after:w-full after:h-full
                   after:bg-[radial-gradient(#000_1px,transparent_1px),radial-gradient(#000_1px,transparent_1px)]
                   after:bg-[length:6px_6px]
-                  after:[background-position:-1px_-1px,2px_2px]">
-                  <span className="font-bold">こんにちは！社長の中原哲哉です！</span>
+                  after:[background-position:-1px_-1px,2px_2px]
+                  after:-z-10
+                ">
+                  <span className="relative font-bold">こんにちは！社長の中原哲哉です！</span>
                 </div>
               </div>
               <p className="mb-4">
