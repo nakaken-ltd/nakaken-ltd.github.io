@@ -43,17 +43,17 @@ export default function RecruitPage() {
               <div className="w-full relative rounded-xl border border-gray-400">
                 <table className="w-full text-sm text-left rtl:text-right text-body">
                   <colgroup>
-                    <col className="w-1/4"/>
+                    <col className="w-[35%] sm:w-1/4"/>
                   </colgroup>
 
                   <tbody>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">職種</td>
-                    <td className="px-6 py-3">建設業 土木・建築 監理及び作業</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">職種</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">建設業 土木・建築 監理及び作業</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">仕事内容</td>
-                    <td className="px-6 py-3 text-justify">
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">仕事内容</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3 text-justify">
                       <p className="mb-[1em]">
                         主な業務内容は、赤磐市内の土木工事・建築工事の現場管理技術者および現場技能者に向けた
                         現場書類・製図、見積りの作成です。近所の困りごとへの協力や、近所のお祭り準備作業等も業務に含まれます。
@@ -76,47 +76,54 @@ export default function RecruitPage() {
                     </td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">雇用形態</td>
-                    <td className="px-6 py-3">正社員</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">雇用形態</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">正社員</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">雇用期間</td>
-                    <td className="px-6 py-3">定めなし</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">雇用期間</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">定めなし</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">就業場所</td>
-                    <td className="px-6 py-3">事業所所在地と同じ（現場は主に赤磐市・和気町・備前市）
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">就業場所</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">事業所所在地と同じ（現場は主に赤磐市・和気町・備前市）
                     </td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">受動喫煙対策</td>
-                    <td className="px-6 py-3">あり（屋内禁煙）電子たばこのみ室内喫煙可</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">
+                      <span className="inline-block">受動</span>
+                      <span className="inline-block">喫煙</span>
+                      <span className="inline-block">対策</span>
+                    </td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">あり（屋内禁煙）電子たばこのみ室内喫煙可</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">マイカー通勤</td>
-                    <td className="px-6 py-3">可、駐車場あり</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">
+                      <span className="inline-block">マイカー</span>
+                      <span className="inline-block">通勤</span>
+                    </td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">可、駐車場あり</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">年齢</td>
-                    <td className="px-6 py-3">69歳以下、定年年齢を上限
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">年齢</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">69歳以下、定年年齢を上限
                     </td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">学歴</td>
-                    <td className="px-6 py-3">不問</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">学歴</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">不問</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">経験</td>
-                    <td className="px-6 py-3">土木管理・建築管理・土木技能者（いずれもあれば尚可）</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">経験</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">土木管理・建築管理・土木技能者（いずれもあれば尚可）</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">PCスキル</td>
-                    <td className="px-6 py-3">ワ－ド・エクセル（あれば尚可）<br/>建設ＣＡＤが使えるならもっと可
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">PCスキル</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">ワ－ド・エクセル（あれば尚可）<br/>建設ＣＡＤが使えるならもっと可
                     </td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">免許・資格</td>
-                    <td className="px-6 py-3">普通自動車運転免許 <span
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">免許・資格</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">普通自動車運転免許 <span
                       className="font-bold">必須（AT限定不可）</span><br/>
                       ２級土木施工管理技士 あれば尚可<br/>
                       ２級建築施工管理技士 あれば尚可<br/>
@@ -124,16 +131,19 @@ export default function RecruitPage() {
                     </td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">その他優遇等</td>
-                    <td className="px-6 py-3">
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">
+                      <span className="inline-block">その他</span>
+                      <span className="inline-block">優遇等</span>
+                    </td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">
                       当社はうらじゃを応援しているので、うらじゃの踊り子さんを優遇いたします。<br/><br/>
                       1. うらじゃ衣装代は当社負担（勤続６ヶ月以上から）<br/>
                       2. 繁忙期でも本祭、遠征を優先してOK<br/>
                     </td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-3">試用期間</td>
-                    <td className="px-6 py-3">3 ヶ月、期間中は手当無し</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">試用期間</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">3ヶ月、期間中は手当無し</td>
                   </tr>
                   </tbody>
                 </table>
@@ -154,36 +164,36 @@ export default function RecruitPage() {
               <div className="w-full relative rounded-xl border border-gray-400">
                 <table className="w-full text-sm text-left rtl:text-right text-body">
                   <colgroup>
-                    <col className="w-1/4"/>
+                    <col className="w-[35%] sm:w-1/4"/>
                   </colgroup>
                   <tbody>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">月額</td>
-                    <td className="px-6 py-3">192,000 円 〜 312,000 円<br/>（月平均労働日数23.3日）</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">月額</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">192,000 円 〜 312,000 円<br/>（月平均労働日数23.3日）</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">賃金形態</td>
-                    <td className="px-6 py-3">日給 8,000 円 〜 13,000 円</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">賃金形態</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">日給 8,000 円 〜 13,000 円</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">通勤手当</td>
-                    <td className="px-6 py-3">実費支給（上限なし）</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">通勤手当</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">実費支給（上限なし）</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">賃金締切日</td>
-                    <td className="px-6 py-3">月末</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">賃金締切日</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">月末</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">賃金支払日</td>
-                    <td className="px-6 py-3">翌月 5 日</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">賃金支払日</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">翌月 5 日</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">昇給</td>
-                    <td className="px-6 py-3">あり<br/>1 月あたり 10,000 円 〜 20,000 円</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">昇給</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">あり<br/>1 月あたり 10,000 円 〜 20,000 円</td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-3">賞与</td>
-                    <td className="px-6 py-3">あり 年2回<br/>賞与金額 300,000 円 〜 500,000 円</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">賞与</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">あり 年2回<br/>賞与金額 300,000 円 〜 500,000 円</td>
                   </tr>
                   </tbody>
                 </table>
@@ -204,32 +214,40 @@ export default function RecruitPage() {
               <div className="w-full relative rounded-xl border border-gray-400">
                 <table className="w-full text-sm text-left rtl:text-right text-body">
                   <colgroup>
-                    <col className="w-1/4"/>
+                    <col className="w-[35%] sm:w-1/4"/>
                   </colgroup>
                   <tbody>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">就業時間</td>
-                    <td className="px-6 py-3">8時00分 〜 17時00分 7時間程度</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">就業時間</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">8時00分 〜 17時00分 7時間程度</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">休憩</td>
-                    <td className="px-6 py-3">10:00〜10:30<br/>12:00〜13:00<br/>15:00〜15:30</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">休憩</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">10:00〜10:30<br/>12:00〜13:00<br/>15:00〜15:30</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">時間外労働</td>
-                    <td className="px-6 py-3">なし</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">時間外労働</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">なし</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">年間休日数</td>
-                    <td className="px-6 py-3">85日</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">年間休日数</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">85日</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">休日</td>
-                    <td className="px-6 py-3">第2・第4土曜日<br/>年末年始<br/>盆休み<br/>その他会社が指定する日</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">休日</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">第2・第4土曜日<br/>年末年始<br/>盆休み<br/>その他会社が指定する日</td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-3">6ヶ月経過後の<br/>年次有給休暇日数</td>
-                    <td className="px-6 py-3">10 日</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3 autophrase">
+                      <span className="inline-block">6ヶ月</span>
+                      <span className="inline-block">経過</span>
+                      <span className="inline-block">後の</span>
+                      <span className="inline-block">年次</span>
+                      <span className="inline-block">有給</span>
+                      <span className="inline-block">休暇</span>
+                      <span className="inline-block">日数</span>
+                    </td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">10 日</td>
                   </tr>
                   </tbody>
                 </table>
@@ -250,20 +268,20 @@ export default function RecruitPage() {
               <div className="w-full relative rounded-xl border border-gray-400">
                 <table className="w-full text-sm text-left rtl:text-right text-body">
                   <colgroup>
-                    <col className="w-1/4"/>
+                    <col className="w-[35%] sm:w-1/4"/>
                   </colgroup>
                   <tbody>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">加入保険</td>
-                    <td className="px-6 py-3">雇用、労災、健康、厚生</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">加入保険</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">雇用、労災、健康、厚生</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">定年</td>
-                    <td className="px-6 py-3">70 歳</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">定年</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">70 歳</td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-3">再雇用制度</td>
-                    <td className="px-6 py-3">あり（上限 75 歳まで）</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">再雇用制度</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">あり（上限 75 歳まで）</td>
                   </tr>
                   </tbody>
                 </table>
@@ -284,20 +302,24 @@ export default function RecruitPage() {
               <div className="w-full relative mb-8 rounded-xl border border-gray-400">
                 <table className="w-full text-sm text-left rtl:text-right text-body">
                   <colgroup>
-                    <col className="w-1/4"/>
+                    <col className="w-[35%] sm:w-1/4"/>
                   </colgroup>
                   <tbody>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">選考方法</td>
-                    <td className="px-6 py-3">面接（1 回）</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">選考方法</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">面接（1 回）</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">選考結果通知</td>
-                    <td className="px-6 py-3">7 日以内に電話で通知</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">
+                      <span className="inline-block">選考</span>
+                      <span className="inline-block">結果</span>
+                      <span className="inline-block">通知</span>
+                    </td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">7 日以内に電話で通知</td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-3">応募書類</td>
-                    <td className="px-6 py-3">履歴書（面接時持参）</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">応募書類</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">履歴書（面接時持参）</td>
                   </tr>
                   </tbody>
                 </table>
@@ -318,20 +340,20 @@ export default function RecruitPage() {
               <div className="w-full relative mb-8 rounded-xl border border-gray-400">
                 <table className="w-full text-sm text-left rtl:text-right text-body">
                   <colgroup>
-                    <col className="w-1/4"/>
+                    <col className="w-[35%] sm:w-1/4"/>
                   </colgroup>
                   <tbody>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">担当者</td>
-                    <td className="px-6 py-3">中原 哲哉</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">担当者</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">中原 哲哉</td>
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
-                    <td className="px-6 py-3">電話番号</td>
-                    <td className="px-6 py-3 underline decoration-dotted"><a href="tel:0869541700">086-954-1700</a></td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">電話番号</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3 underline decoration-dotted"><a href="tel:0869541700">086-954-1700</a></td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-3">FAX</td>
-                    <td className="px-6 py-3">086-954-1702</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">FAX</td>
+                    <td className="px-4 py-2 sm:px-6 sm:py-3">086-954-1702</td>
                   </tr>
                   </tbody>
                 </table>
