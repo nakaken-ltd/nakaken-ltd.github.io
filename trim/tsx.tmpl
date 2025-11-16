@@ -2,12 +2,13 @@ import Image from 'next/image';
 
 export default function {{.CompName}}() {
   return (
-    <div className="[@media(min-width:1024px)]:h-[{{.Height}}px] h-[calc({{.Height}}/{{.Width}}*96vw)]">
+    <div className="relative [@media(min-width:1024px)]:h-[{{.Height}}px] h-[calc({{.Height}}/{{.Width}}*100vw)] max-w-[1024px]">
       {{range $p := .Polygons}}<div>
         <img
           alt="{{$p.Alt}}"
           src="{{$p.Src}}"
-          className="absolute max-w-full w-auto [@media(min-width:1024px)]:left-[{{$p.Left}}px] left-[calc({{$p.Left}}/{{$.Height}}*96vw)] [@media(min-width:1024px)]:top-[{{$p.Top}}px] top-[calc({{$p.Top}}/{{$.Height}}*96vw)] [@media(min-width:1024px)]:h-[{{$p.Height}}px] h-[calc({{$p.Height}}/{{$.Height}}*98vw)]"/>
+          className="absolute hover:scale-105 transition duration-100 hover:z-50 max-w-full w-auto [@media(min-width:1024px)]:left-[calc({{$p.Left}}/{{$.Width}}*{{$.MaxWidth}}px)] left-[calc({{$p.Left}}/{{$.Width}}*100vw)] [@media(min-width:1024px)]:top-[calc({{$p.Top}}/{{$.Width}}*{{$.MaxWidth}}px)] top-[calc({{$p.Top}}/{{$.Width}}*100vw)] [@media(min-width:1024px)]:h-[calc({{$p.Height}}/{{$.Width}}*{{$.MaxWidth}}px)] h-[calc({{$p.Height}}/{{$.Width}}*100vw)] [clip-path:polygon({{$p.PolyCP}})]"
+        />
       </div>
       {{end}}
     </div>
