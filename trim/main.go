@@ -285,7 +285,7 @@ func scalePolygons(polygons []polygon, dpr int) (newPolygons []polygon) {
 // Template parameters
 
 type templateParamsPolygon struct {
-	Alt           string
+	Link          string
 	Src           string
 	Width, Height int
 	Top, Left     int
@@ -305,15 +305,11 @@ func main() {
 }
 
 func main_() int {
-	var cutFrames string
-	var generateTSX string
-	var dpr int
-	var maxWidth int
-
-	flag.StringVar(&cutFrames, "cut", "", "Cut image into the frames and save it in the specified path")
-	flag.StringVar(&generateTSX, "generate", "", "Generate TSX and save it at the specified path")
-	flag.IntVar(&dpr, "dpr", 1, "device pixel ratio")
-	flag.IntVar(&maxWidth, "maxwidth", 1024, "Max height width")
+	cutFrames := flag.String("cut", "", "Cut image into the frames and save it in the specified path")
+	generateTSX := flag.String("generate", "", "Generate TSX and save it at the specified path")
+	dpr := flag.Int("dpr", 1, "device pixel ratio")
+	maxWidth := flag.Int("maxwidth", 1024, "Max height width")
+	lrBlank := flag.Int("lrblank", 1, "left blank and right blank")
 	flag.Parse()
 
 	if flag.NArg() != 1 {
@@ -357,8 +353,8 @@ func main_() int {
 	}
 	log.Infof("found %d rects/polygons", len(polygons))
 
-	if cutFrames != "" {
-		fnPath, err := filepath.EvalSymlinks(cutFrames)
+	if *cutFrames != "" {
+		fnPath, err := filepath.EvalSymlinks(*cutFrames)
 		if err != nil {
 			log.Errorf("failed to evaluate symlinks (invalid output path?): %s", err)
 			return 1
@@ -379,18 +375,18 @@ func main_() int {
 		}
 		log.Infof("width: %.1f, height: %.1f", width, height)
 
-		if dpr > 1 {
+		if *dpr > 1 {
 			log.Infof("Scaling %dx", dpr)
 		}
 
-		pm, err := worker.NewPixmap(uint32(width*float32(dpr)), uint32(height*float32(dpr)))
+		pm, err := worker.NewPixmap(uint32(width*float32(*dpr)), uint32(height*float32(*dpr)))
 		if err != nil {
 			log.Errorf("failed to generate a new pixmap: %s", err)
 			return 1
 		}
 		defer pm.Close()
 
-		err = tree.Render(resvg.TransformFromScale(float32(dpr), float32(dpr)), pm)
+		err = tree.Render(resvg.TransformFromScale(float32(*dpr), float32(*dpr)), pm)
 		if err != nil {
 			log.Errorf("failed to render SVG: %s", err)
 			return 1
@@ -442,7 +438,7 @@ func main_() int {
 			}
 		}
 
-		scaledPolygons := scalePolygons(polygons, dpr)
+		scaledPolygons := scalePolygons(polygons, *dpr)
 
 		wg := sync.WaitGroup{}
 		for i, poly := range scaledPolygons {
@@ -457,7 +453,7 @@ func main_() int {
 		wg.Wait()
 	}
 
-	if generateTSX != "" {
+	if *generateTSX != "" {
 		tsx, err := template.New("tsx").Parse(tsxTemplate)
 		if err != nil {
 			log.Errorf("failed to parse TSX template: %s", err)
@@ -469,15 +465,17 @@ func main_() int {
 		topmost := slices.MinFunc(polygons, func(a, b polygon) int { return cmp.Compare(a.Top(), b.Top()) }).Top()
 		bottommost := slices.MaxFunc(polygons, func(a, b polygon) int { return cmp.Compare(a.Bottom(), b.Bottom()) }).Bottom()
 
+		fnName = "top"
+
 		var pargs []templateParamsPolygon
 		for _, poly := range polygons {
 			pargs = append(pargs, templateParamsPolygon{
-				Alt:    poly.Name,
+				Link:   poly.Name,
 				Src:    fmt.Sprintf("%s_%s.png", fnName, poly.Name),
-				Width:  poly.Width(),
+				Width:  poly.Width() - leftmost + *lrBlank*2, // Add leftmost (left blank width) to centerize the frames
 				Height: poly.Height(),
-				Top:    poly.Top(),
-				Left:   poly.Left(),
+				Top:    poly.Top() - topmost, // Subtract topmost to remove the top blank
+				Left:   poly.Left() - leftmost + *lrBlank,
 				SVGCP:  poly.SVGClipPath(),
 				PolyCP: poly.PolygonClipPath(),
 			})
@@ -485,13 +483,13 @@ func main_() int {
 
 		args := templateParams{
 			CompName: "MangaFrames",
-			Width:    rightmost - leftmost,
-			Height:   bottommost - topmost,
-			MaxWidth: maxWidth,
+			Width:    rightmost - leftmost + *lrBlank*2, // Add leftmost (left blank width) to centerize the frames
+			Height:   bottommost - topmost,              // Subtract topmost to remove the top blank
+			MaxWidth: *maxWidth,
 			Polygons: pargs,
 		}
 
-		f, err := os.Create(generateTSX)
+		f, err := os.Create(*generateTSX)
 		if err != nil {
 			log.Errorf("failed to create TSX output file: %s", err)
 			return 1
