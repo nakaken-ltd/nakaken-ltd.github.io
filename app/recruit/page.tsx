@@ -327,7 +327,7 @@ export default function RecruitPage() {
                   </tr>
                   <tr className="border-b border-gray-400 border-default">
                     <td className="px-6 py-3">電話番号</td>
-                    <td className="px-6 py-3">086-954-1700</td>
+                    <td className="px-6 py-3 underline decoration-dotted"><a href="tel:0869541700">086-954-1700</a></td>
                   </tr>
                   <tr>
                     <td className="px-6 py-3">FAX</td>
