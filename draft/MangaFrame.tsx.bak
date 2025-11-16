@@ -1,0 +1,62 @@
+import resolveConfig from 'tailwindcss/resolveConfig';
+import tailwindConfig from '../../tailwind.config.ts';
+
+const fullConfig = resolveConfig(tailwindConfig);
+const breakpoints = fullConfig.theme?.screens;
+
+function Frame({ alt, src, left, top, width, height, totalWidth, totalHeight }: {
+  alt: string;
+  src: string;
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  totalWidth: number;
+  totalHeight: number;
+}) {
+  const lWide = "[@media(min-width:" + breakpoints.lg + ")]:left-[" + left + "px]";
+  const lNarrow = "left-[calc(" + left + "/" + totalWidth + "*96vw)]";
+  const tWide = `[@media(min-width:${breakpoints.lg})]:top-[${top}px]`;
+  const tNarrow = `top-[calc(${top}/${totalHeight}*96vw)]`;
+  const wWide = `[@media(min-width:${breakpoints.lg})]:w-[${width}px]`;
+  const wNarrow = `w-[calc(${width}/${totalWidth}*96vw)]`;
+  const hWide = `[@media(min-width:${breakpoints.lg})]:h-[${height}px]`;
+  const hNarrow = `h-[calc(${height}/${totalHeight}*96vw)]`;
+  const style = `absolute ${lWide} ${lNarrow} ${tWide} ${tNarrow} ${wWide} ${wNarrow} ${hWide} ${hNarrow}`;
+
+  return (
+    <img
+      alt={alt}
+      src={src}
+      className={style}
+    />
+  );
+}
+
+type FrameProps = {
+  alt: string,
+  src: string,
+  left: number,
+  top: number,
+  width: number,
+  height: number,
+  totalWidth: number,
+  totalHeight: number
+}
+
+export default function MangaFrame({alt, src, left, top, width, height, totalWidth, totalHeight}: FrameProps){
+  return (
+    <div>
+      <Frame
+        alt={alt}
+        src={src}
+        left={left}
+        top={top}
+        width={width}
+        height={height}
+        totalWidth={totalWidth}
+        totalHeight={totalHeight}
+      />
+    </div>
+  );
+}

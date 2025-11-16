@@ -13,6 +13,9 @@ export default {
         foreground: "var(--foreground)",
       },
     },
+    fontFamily: {
+      genei: ['var(--font-genei)', 'var(--font-noto)', "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", "sans-serif"]
+    }
   },
   plugins: [],
 } satisfies Config;
