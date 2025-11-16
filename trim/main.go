@@ -376,7 +376,7 @@ func main_() int {
 		log.Infof("width: %.1f, height: %.1f", width, height)
 
 		if *dpr > 1 {
-			log.Infof("Scaling %dx", dpr)
+			log.Infof("scaling %dx", *dpr)
 		}
 
 		pm, err := worker.NewPixmap(uint32(width*float32(*dpr)), uint32(height*float32(*dpr)))
